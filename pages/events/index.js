@@ -2,6 +2,7 @@ import Link from "next/link";
 import Layout from "@/components/Layout";
 import EventItem from "@/components/EventItem";
 import { API_URL } from "@/config/index";
+const qs = require('qs');
 
 export default function EventsPage({ events }) {
   return (
