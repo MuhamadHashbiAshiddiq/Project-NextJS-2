@@ -25,12 +25,12 @@ export default function EventPage({ evt }) {
           </a>
         </div>
         <span>
-          {evt.date} at {evt.time}
+          {new Date(evt.date).toLocaleString('en-US')} at {evt.time}
         </span>
         <h1>{evt.name}</h1>
         {evt.image && (
           <div className={styles.image}>
-            <Image src={evt.image} width={960} height={600} />
+            <Image src={evt.image.formats.thumbnail.url} width={960} height={600} />
           </div>
         )}
 

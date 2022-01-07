@@ -8,9 +8,9 @@ export default function EventsPage({ events }) {
     <Layout>
       <h1>Events</h1>
       {events.length === 0 && <h3>No events to show</h3>}
-      {events.map((evt) => (
+      {/* {events.map((evt) => (
         <EventItem key={evt.id} evt={evt} />
-      ))}
+      ))} */}
 
       {events.length > 0 && (
         <Link href="/">
@@ -22,11 +22,19 @@ export default function EventsPage({ events }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${API_URL}/api/events`);
+  const query = qs.stringify(
+    {
+      populate: ["image"],
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  );
+  const res = await fetch(`${API_URL}/events?${query}`);
   const events = await res.json();
 
   return {
-    props: { events:events.slice(0, 6) },
+    props: { events },
     revalidate: 1,
   };
 }
