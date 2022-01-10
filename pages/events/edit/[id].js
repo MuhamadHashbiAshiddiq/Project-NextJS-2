@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Layout from "@/components/Layout";
 import Modal from "@/components/Modal";
+import ImageUpload from "@/components/ImageUpload";
 import { API_URL } from "@/config/index";
 import styles from "@/styles/Form.module.css";
 import qs from "qs";
@@ -69,6 +70,13 @@ export default function EditEventPage({ evt }) {
     setValues({ ...values, [name]: value });
   };
 
+  const imageUploaded = async (e) => {
+    const res = await fetch(`${API_URL}/events/${evt.id}`);
+    const datta = await res.json();
+    setImagePreview(data.image.format.thumbnail.url);
+    setShowModal(false);
+  };
+
   return (
     <Layout title="Add New Event">
       <Link href="/events">Go Back</Link>
@@ -119,15 +127,13 @@ export default function EditEventPage({ evt }) {
         </div>
       )}
       <div>
-        <button 
-        onClick={() => setShowModal(true)}
-        className="btn-secondary btn-icon" >
+        <button onClick={() => setShowModal(true)} className="btn-secondary btn-icon">
           <FaImage /> Set Image
         </button>
       </div>
 
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        IMAGE UPLOAD
+        <ImageUpload evtId={evt.id} imageUploaded={imageUploaded} />
       </Modal>
     </Layout>
   );
