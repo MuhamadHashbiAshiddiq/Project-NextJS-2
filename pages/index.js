@@ -6,6 +6,7 @@ const qs = require('qs');
 
 export default function HomePage({ events }) {
   return (
+    // console.log(events)
     <Layout>
       <h1>Upcoming Events</h1>
       {events.length === 0 && <h3>No events to show</h3>}
@@ -33,6 +34,8 @@ export async function getStaticProps() {
   );
   const res = await fetch(`${API_URL}/events?${query}`);
   const events = await res.json();
+
+
 
   return {
     props: { events },

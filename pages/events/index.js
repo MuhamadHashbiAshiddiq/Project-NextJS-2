@@ -1,10 +1,12 @@
-import Link from "next/link";
 import Layout from "@/components/Layout";
 import EventItem from "@/components/EventItem";
+import Pagination from "@/components/Pagination";
 import { API_URL } from "@/config/index";
-const qs = require('qs');
+const qs = require("qs");
 
-export default function EventsPage({ events }) {
+export default function EventsPage({ events, page, total }) {
+  const lastPage = Math.ceil(total / PER_PAGE);
+
   return (
     <Layout>
       <h1>Events</h1>
@@ -12,17 +14,12 @@ export default function EventsPage({ events }) {
       {/* {events.map((evt) => (
         <EventItem key={evt.id} evt={evt} />
       ))} */}
-
-      {events.length > 0 && (
-        <Link href="/">
-          <a className="btn-secondary">Back</a>
-        </Link>
-      )}
+      <Pagination page={page} total={total}/>
     </Layout>
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const query = qs.stringify(
     {
       populate: ["image"],
@@ -31,11 +28,16 @@ export async function getStaticProps() {
       encodeValuesOnly: true,
     }
   );
-  const res = await fetch(`${API_URL}/events?${query}`);
-  const events = await res.json();
+  const start = +page === 1 ? 0 : (+page - 1) * PER_PAGE;
+
+  const totalRes = await fetch(`${API_URL}/events/count`);
+  const total = await totalRes.json();
+
+  const eventRes = await fetch(`${API_URL}/events?${query}:ASC ${PER_PAGE} & ${start}`);
+
+  const events = await eventRes.json();
 
   return {
-    props: { events },
-    revalidate: 1,
+    props: { events, page: +page, total },
   };
 }
