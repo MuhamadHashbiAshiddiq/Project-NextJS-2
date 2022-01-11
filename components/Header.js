@@ -1,24 +1,32 @@
-import Link from 'next/link'
-import styles from "@/styles/Header.module.css"
+import Link from "next/link";
+import Search from "./Search";
+import styles from "@/styles/Header.module.css";
 
 export default function Header() {
   return (
     <header className={styles.header}>
-    <div className={styles.logo}>
-      <Link href='/'>
-        <a>DJ Events</a>
-      </Link>      
-    </div>
+      <div className={styles.logo}>
+        <Link href="/">
+          <a>DJ Events</a>
+        </Link>
+      </div>
 
-    <nav>
-      <ul>
-        <li>
-          <Link href="/events">
-            <a>Events</a>
-          </Link>
-        </li>
-      </ul>
-    </nav>
+      <Search />
+
+      <nav>
+        <ul>
+          <li>
+            <Link href="/events">
+              <a>Events</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/events/add">
+              <a>Add Events</a>
+            </Link>
+          </li>
+        </ul>
+      </nav>
     </header>
-  )
+  );
 }
