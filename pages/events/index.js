@@ -1,12 +1,10 @@
 import Layout from "@/components/Layout";
 import EventItem from "@/components/EventItem";
 import Pagination from "@/components/Pagination";
-import { API_URL } from "@/config/index";
+import { API_URL, PER_PAGE } from "@/config/index";
 const qs = require("qs");
 
 export default function EventsPage({ events, page, total }) {
-  const lastPage = Math.ceil(total / PER_PAGE);
-
   return (
     <Layout>
       <h1>Events</h1>
@@ -19,7 +17,7 @@ export default function EventsPage({ events, page, total }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({query: { page = 1}}) {
   const query = qs.stringify(
     {
       populate: ["image"],

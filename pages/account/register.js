@@ -1,9 +1,10 @@
-import { FaUser } from "react-icons/fa-user";
+import { FaUser } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import Layout from "@/components/Layout";
+import AuthContext from "@/context/AuthContext";
 import styles from "@/styles/AuthForm.module.css";
 
 export default function RegisterPage() {
@@ -12,14 +13,16 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
+  const { register, error } = useContext(AuthContext);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(password !== passwordConfirm) {
-      toast.error("Passwords do not match!")
-      return
+    if (password !== passwordConfirm) {
+      toast.error("Passwords do not match!");
+      return;
     }
-    console.log({username, email, password});
+    register({ username, email, password });
   };
 
   return (
@@ -32,7 +35,7 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="username">Username</label>
-            <input type="type" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+            <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
           </div>
           <div>
             <label htmlFor="email">Email Address</label>
